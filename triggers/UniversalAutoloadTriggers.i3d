@@ -29,6 +29,7 @@
       <Shape name="leftAutoTrigger" shapeId="1" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x70000" nodeId="15" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
       <Shape name="rightAutoTrigger" shapeId="1" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x70000" nodeId="16" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
       <Shape name="unloadingTrigger" shapeId="1" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x50800" nodeId="17" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
+      <Shape name="topAutoTrigger" shapeId="1" kinematic="true" trigger="true" collisionFilterGroup="0x20000000" collisionFilterMask="0x70000" nodeId="18" castsShadows="true" receiveShadows="true" nonRenderable="true" materialIds="5"/>
     </TransformGroup>
   </Scene>
 
