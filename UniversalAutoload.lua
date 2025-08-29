@@ -1445,14 +1445,15 @@ function UniversalAutoload:initialiseTransformGroups(actualRootNode)
 	doCreateTrigger("playerTrigger", "ualPlayerTrigger_Callback")
 	doCreateTrigger("leftPickupTrigger", "ualLoadingTrigger_Callback")
 	doCreateTrigger("rightPickupTrigger", "ualLoadingTrigger_Callback")
-	doCreateTrigger("rearPickupTrigger", "ualLoadingTrigger_Callback")
-	doCreateTrigger("frontPickupTrigger", "ualLoadingTrigger_Callback")
-	doCreateTrigger("rearAutoTrigger", "ualAutoLoadingTrigger_Callback")
-	doCreateTrigger("leftAutoTrigger", "ualAutoLoadingTrigger_Callback")
-	doCreateTrigger("rightAutoTrigger", "ualAutoLoadingTrigger_Callback")
+        doCreateTrigger("rearPickupTrigger", "ualLoadingTrigger_Callback")
+        doCreateTrigger("frontPickupTrigger", "ualLoadingTrigger_Callback")
+        doCreateTrigger("rearAutoTrigger", "ualAutoLoadingTrigger_Callback")
+        doCreateTrigger("leftAutoTrigger", "ualAutoLoadingTrigger_Callback")
+        doCreateTrigger("rightAutoTrigger", "ualAutoLoadingTrigger_Callback")
+        doCreateTrigger("topAutoTrigger", "ualAutoLoadingTrigger_Callback")
 
-	delete(triggersRootNode)
-	
+        delete(triggersRootNode)
+
 end
 
 function UniversalAutoload:updateLoadAreaTransformGroups()
@@ -1634,20 +1635,28 @@ function UniversalAutoload:updateLoadingTriggers()
 		doRemoveTrigger("rearAutoTrigger")
 	end
 	
-	if spec.enableSideLoading then
-		local depth = 0.05
-		local recess = spec.loadVolume.width/7
-		local boundary = 2*spec.loadVolume.width/3
-		local width, height, length = depth, spec.loadVolume.height, spec.loadVolume.length-boundary
-		local tx, ty, tz = 2*depth+(spec.loadVolume.width/2)-recess, spec.loadVolume.height/2, 0
-			
-		doUpdateTrigger("leftAutoTrigger", width, height, length, tx, ty, tz)
-		doUpdateTrigger("rightAutoTrigger", width, height, length, -tx, ty, tz)
-	else
-		doRemoveTrigger("leftAutoTrigger")
-		doRemoveTrigger("rightAutoTrigger")
-	end
-	
+        if spec.enableSideLoading then
+                local depth = 0.05
+                local recess = spec.loadVolume.width/7
+                local boundary = 2*spec.loadVolume.width/3
+                local width, height, length = depth, spec.loadVolume.height, spec.loadVolume.length-boundary
+                local tx, ty, tz = 2*depth+(spec.loadVolume.width/2)-recess, spec.loadVolume.height/2, 0
+
+                doUpdateTrigger("leftAutoTrigger", width, height, length, tx, ty, tz)
+                doUpdateTrigger("rightAutoTrigger", width, height, length, -tx, ty, tz)
+        else
+                doRemoveTrigger("leftAutoTrigger")
+                doRemoveTrigger("rightAutoTrigger")
+        end
+
+        local topAutoTrigger = spec.triggers["topAutoTrigger"]
+        if topAutoTrigger then
+                local depth = 0.05
+                local width, height, length = spec.loadVolume.width, depth, spec.loadVolume.length
+                local tx, ty, tz = 0, spec.loadVolume.height + depth/2, 0
+                doUpdateTrigger("topAutoTrigger", width, height, length, tx, ty, tz)
+        end
+
 end
 
 
@@ -5933,12 +5942,12 @@ function UniversalAutoload:drawDebugDisplay()
 		if UniversalAutoload.showDebug then
 			for _, trigger in pairs(spec.triggers or {}) do
 				local w, h, l = trigger.width or 1, trigger.height or 1, trigger.length or 1
-				if trigger.name == "rearAutoTrigger" or trigger.name == "leftAutoTrigger" or trigger.name == "rightAutoTrigger" then
-					--DebugUtil.drawDebugCube(trigger.node, 1,1,1, unpack(GREY))
-					UniversalAutoload.DrawDebugPallet(trigger.node, w, h, l, true, false, YELLOW, h/2)
-				elseif trigger.name == "leftPickupTrigger" or trigger.name == "rightPickupTrigger"
-					or trigger.name == "rearPickupTrigger" or trigger.name == "frontPickupTrigger"
-					or (debugLoading and trigger.name == "unloadingTrigger") then
+                                if trigger.name == "rearAutoTrigger" or trigger.name == "leftAutoTrigger" or trigger.name == "rightAutoTrigger" or trigger.name == "topAutoTrigger" then
+                                        --DebugUtil.drawDebugCube(trigger.node, 1,1,1, unpack(GREY))
+                                        UniversalAutoload.DrawDebugPallet(trigger.node, w, h, l, true, false, YELLOW, h/2)
+                                elseif trigger.name == "leftPickupTrigger" or trigger.name == "rightPickupTrigger"
+                                        or trigger.name == "rearPickupTrigger" or trigger.name == "frontPickupTrigger"
+                                        or (debugLoading and trigger.name == "unloadingTrigger") then
 					--DebugUtil.drawDebugCube(trigger.node, 1,1,1, unpack(GREY))
 					UniversalAutoload.DrawDebugPallet(trigger.node, w, h, l, true, false, MAGENTA, h/2)
 				end
